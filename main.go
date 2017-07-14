@@ -29,8 +29,12 @@ func main() {
 	m.Get("/about", BasicRenderData, AboutPage)
 	m.Get("/page/:pagenum(^[1-9]\\d*$)", BasicRenderData, HomePage)
 	m.Get("/admin", BasicRenderData, AdminPage)
-	m.Combo("/admin/add").Get(BasicRenderData, AdminPage).Post(BasicRenderData, AddArticle)
 	m.Combo("/login").Get(BasicRenderData, LoginPage).Post(BasicRenderData, CheckLogin)
+	m.Get("/admin/article", BasicRenderData, AdminPage)
+	m.Combo("/admin/article/add").Get(BasicRenderData, AdminPage).Post(BasicRenderData, PostAddArticle)
+	m.Get("/admin/manager", BasicRenderData, ManagerPage)
+	m.Post("/admin/category/add", BasicRenderData, PostAddCategory)
+	m.Post("/admin/tag/add", BasicRenderData, PostAddTag)
 	m.Get("/article/:id([0-9]+)", BasicRenderData, ArticlePage)
 
 	m.NotFound(BasicRenderData, NotFoundPage)

@@ -14,20 +14,20 @@ type Article struct {
 	Summary    string `gorm:"size:1<<16-1"`
 	Keywords   string
 	Url        string
-	tag        []Tag
-	category   Category
+	Tags       []Tag
+	Category   Category
 	ReadTime   int
 	ViewNum    int
 	CommentNum int
 }
 
 type Tag struct {
-	ID   int
+	ID   uint
 	Name string `gorm:"index"`
 }
 
 type Category struct {
-	ID   int
+	ID   uint
 	Name string `gorm:"index"`
 }
 
@@ -61,6 +61,19 @@ func AddArticle(updArt Article) uint {
 	return updArt.ID
 }
 
+// 根据id删除指定id文章
+func DelArticle(id uint) {
+	db, err := gorm.Open("sqlite3", "db.db")
+	if err != nil {
+		panic("连接数据库失败")
+	}
+	defer db.Close()
+
+	var updArt Article
+	updArt.ID = id
+	db.Delete(&updArt)
+}
+
 // 更新文章
 func UpdateArticle(updArt Article) {
 	db, err := gorm.Open("sqlite3", "db.db")
@@ -86,6 +99,7 @@ func GetArticle(id uint) Article {
 	return article
 }
 
+// 遍历返回指定页数的文章
 func ListArticle(pagenum int, pageOffset int) []Article {
 	db, err := gorm.Open("sqlite3", "db.db")
 	if err != nil {
@@ -145,4 +159,54 @@ func GetNextArticle(id uint) Article {
 		return articles[0]
 	}
 	return Article{}
+}
+
+// 添加分类
+func AddCategory(cate Category) uint {
+	db, err := gorm.Open("sqlite3", "db.db")
+	if err != nil {
+		panic("连接数据库失败")
+	}
+	defer db.Close()
+
+	db.Create(&cate)
+	return cate.ID
+}
+
+// 取得所有分类的数据列表
+func GetAllCategory() []Category {
+	db, err := gorm.Open("sqlite3", "db.db")
+	if err != nil {
+		panic("连接数据库失败")
+	}
+	defer db.Close()
+
+	var categories []Category
+	db.Find(&categories)
+	return categories
+}
+
+// 添加标签
+func AddTag(tag Tag) uint {
+	db, err := gorm.Open("sqlite3", "db.db")
+	if err != nil {
+		panic("连接数据库失败")
+	}
+	defer db.Close()
+
+	db.Create(&tag)
+	return tag.ID
+}
+
+// 取得所有标签的数据列表
+func GetAllTag() []Tag {
+	db, err := gorm.Open("sqlite3", "db.db")
+	if err != nil {
+		panic("连接数据库失败")
+	}
+	defer db.Close()
+
+	var tags []Tag
+	db.Find(&tags)
+	return tags
 }

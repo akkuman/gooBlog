@@ -4058,3 +4058,14 @@ a {
 }
 
 /*# sourceMappingURL=theme.css.map */
+
+.selectpicker {
+  border:2px solid #66615b;
+}
+
+.btn-default:hover, .btn-default:focus, .btn-default:active, .btn-default.active, .open .dropdown-toggle.btn-default {
+    background-color: #ebebeb;
+    border-color: #adadad;
+    color: #333;
+}
+

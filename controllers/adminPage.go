@@ -6,6 +6,7 @@ import (
 	"gopkg.in/macaron.v1"
 )
 
+// GET登录页面
 func LoginPage(ctx *macaron.Context) {
 	ctx.Data["pageTitle"] = "后台管理登录-" + sitename
 	ctx.Data["showError"] = false
@@ -13,6 +14,7 @@ func LoginPage(ctx *macaron.Context) {
 	ctx.HTML(200, "login")
 }
 
+// POST登录数据并检查
 func CheckLogin(ctx *macaron.Context) {
 	username := ctx.Query("username")
 	password := ctx.Query("password")
@@ -26,41 +28,54 @@ func CheckLogin(ctx *macaron.Context) {
 	}
 }
 
+// GET检查cookie进入后台
 func AdminPage(ctx *macaron.Context) {
 	if checkLoginStatus(ctx) {
 		ctx.Data["pageTitle"] = "后台管理-" + sitename
 		ctx.Data["isAdd"] = true
-		ctx.HTML(200, "admin_add")
+		ctx.Data["categories"] = models.GetAllCategory()
+		ctx.Data["tags"] = models.GetAllTag()
+		ctx.HTML(200, "admin_article")
 	} else {
 		ctx.Redirect("/login", 302)
 	}
 }
 
-func AddArticle(ctx *macaron.Context) {
+// POST发表文章
+func PostAddArticle(ctx *macaron.Context) {
 	if checkLoginStatus(ctx) {
 		ctx.Data["pageTitle"] = "后台管理-" + sitename
 		ctx.Data["isAdd"] = true
+		ctx.Data["categories"] = models.GetAllCategory()
+		ctx.Data["tags"] = models.GetAllTag()
 		articleTitle := ctx.Query("articleTitle")
 		articleSummary := ctx.Query("articleSummary")
 		articleContent := ctx.Query("articleContent")
+		articleCateName := ctx.Query("articleCate")
+		articleTagsName := ctx.QueryStrings("articleTags")
 		ctx.Data["isPostReq"] = true
 		if articleTitle != "" {
+			ctx.Data["titleExist"] = true
 			var article models.Article
 			article.Title = articleTitle
 			article.Content = articleContent
 			article.Summary = articleSummary
+			article.Category = models.Category{Name: articleCateName}
+			// 根据POST值构建Tag结构列表
+			var tags []models.Tag
+			for _, v := range articleTagsName {
+				tags = append(tags, models.Tag{Name: v})
+			}
+			article.Tags = tags
 			_ = models.AddArticle(article)
-			ctx.Data["titleExist"] = true
-			ctx.HTML(200, "admin_add")
-		} else {
-			ctx.Data["titleExist"] = false
-			ctx.HTML(200, "admin_add")
 		}
+		ctx.HTML(200, "admin_article")
 	} else {
 		ctx.Redirect("/login", 302)
 	}
 }
 
+// 检查cookie判断是否登录
 func checkLoginStatus(ctx *macaron.Context) bool {
 	username := ctx.GetCookie("username")
 	password := ctx.GetCookie("password")
@@ -68,5 +83,51 @@ func checkLoginStatus(ctx *macaron.Context) bool {
 		return true
 	} else {
 		return false
+	}
+}
+
+// GET管理页面
+func ManagerPage(ctx *macaron.Context) {
+	ctx.Data["pageTitle"] = "后台管理-" + sitename
+	ctx.Data["isManager"] = true
+
+	ctx.HTML(200, "admin_manager")
+}
+
+// POST添加分类
+func PostAddCategory(ctx *macaron.Context) {
+	if checkLoginStatus(ctx) {
+		ctx.Data["pageTitle"] = "后台管理-" + sitename
+		ctx.Data["isManager"] = true
+		ctx.Data["isPostReq"] = true
+		categoryName := ctx.Query("category_name")
+		if categoryName != "" {
+			ctx.Data["titleExist"] = true
+			var category models.Category
+			category.Name = categoryName
+			_ = models.AddCategory(category)
+		}
+		ctx.HTML(200, "admin_manager")
+	} else {
+		ctx.Redirect("/login", 302)
+	}
+}
+
+// POST添加标签
+func PostAddTag(ctx *macaron.Context) {
+	if checkLoginStatus(ctx) {
+		ctx.Data["pageTitle"] = "后台管理-" + sitename
+		ctx.Data["isManager"] = true
+		ctx.Data["isPostReq"] = true
+		tagName := ctx.Query("tag_name")
+		if tagName != "" {
+			ctx.Data["titleExist"] = true
+			var tag models.Tag
+			tag.Name = tagName
+			_ = models.AddTag(tag)
+		}
+		ctx.HTML(200, "admin_manager")
+	} else {
+		ctx.Redirect("/login", 302)
 	}
 }
