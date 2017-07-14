@@ -1,0 +1,54 @@
+{{define "sidebar"}}
+<div class="sidebar" data-background-color="white" data-active-color="danger">
+    <div class="sidebar-wrapper">
+        <div class="logo">
+            <a href="/" class="simple-text">
+                <i class="ti-heart-broken"></i> {{.siteName}}
+            </a>
+        </div>
+
+        <ul class="nav">
+
+            <li {{if .isHome}}class="active"{{end}}>
+                <a href="/">
+                    <i class="ti-home"></i>
+                    <p>HOME</p>
+                </a>
+            </li>
+            <li {{if .isArchive}}class="active"{{end}}>
+                <a href="/archive">
+                    <i class="ti-archive"></i>
+                    <p>Archive</p>
+                </a>
+            </li>
+            <li {{if .isAbout}}class="active"{{end}}>
+                <a href="/about">
+                    <i class="ti-user"></i>
+                    <p>About</p>
+                </a>
+            </li>
+            {{if .isArticle}}
+            <li class="active">
+                <a href="#">
+                    <i class="ti-book"></i>
+                    <p>Article</p>
+                </a>
+            </li>
+            {{end}}
+        </ul>
+        <div class="slogon text-center">
+			{{range $i, $v := .quoteSlice}}
+				<p>{{$v}}<br></p>
+			{{end}}
+        </div>
+        <div class="social">
+            <a class="btn btn-rect" href="{{.linkGithub}}" target="_blank"><i class="ti-github"></i> Github</a>
+            <a class="btn btn-rect" href="{{.linkTwitter}}" target="_blank"><i class="ti-twitter-alt"></i> Twitter</a>
+            <!--
+			<a class="btn btn-rect" href="" target="_blank"><i class="ti-facebook"></i> Facebook</a>
+            <a class="btn btn-rect" href="" target="_blank"><i class="ti-pinterest-alt"></i> Pinterest</a>
+			-->
+        </div>
+    </div>
+</div>
+{{end}}

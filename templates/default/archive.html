@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    {{template "header" .}}
+</head>
+
+<body>
+    <div class="wrapper">
+        {{template "sidebar" .}}
+        <div class="main-panel">
+            {{template "nav" .}}
+            <div class="content bg-white">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-8 col-md-offset-2">
+                            <div class="post-area">
+                                <div class="card card-user">
+                                    <div class="image">
+                                        <img src="/assets/img/demo.jpeg">
+                                    </div>
+                                    <div class="content">
+                                        <div class="author">
+                                            <img class="avatar border-white" src="/assets/img/avatar.png" alt="John Doe">
+                                            <h4 class="title">{{.author}}<br>
+
+                                                <a href="{{.linkGithub}}"><small>@{{.author}}</small></a>
+
+                                            </h4>
+                                        </div>
+
+
+                                        <div class="description text-center">
+                                        
+                                            {{range $i, $v := .quoteSlice}}
+                                                <p>{{$v}}<br></p>
+                                            {{end}}
+                                            
+                                        </div>
+
+
+                                    </div>
+                                    <hr>
+                                    <div class="text-center">
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <h5>{{.blogsNum}}<br><small>Blogs</small></h5>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <h5>{{.tagsNum}}<br><small>Tages</small></h5>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <h5>{{.categoriesNum}}<br><small>Categories</small></h5>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="archive-year-wrap">
+                                    <a class="btn btn-success" href="#"><i class="ti-time"></i> {{.todayDate}}</a>
+                                </div>
+                                <div class="archives">
+                                    <section id="cd-timeline" class="cd-container">
+                                    {{range .articles}}
+                                        <div class="cd-timeline-block">
+                                            <div class="cd-timeline-img cd-blog">
+                                                <img src="assets/img/cd-icon-blog.svg" alt="Picture">
+                                            </div>
+                                            <div class="hover-shadow cd-timeline-content">
+                                                <a href="{{.Url}}">
+                                                <h2>{{.Title}}</h2>
+                                                <span class="cd-date"><i class="ti-timer"></i> {{.CreatedAt | printf "%.10s"}}</span>
+                                            <span class="cd-date"><i class="ti-time"></i> {{.UpdatedAt | printf "%.10s"}}</span>
+                                                <span class="cd-eye"><i class="ti-eye"></i> {{.ViewNum}}</span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    {{end}}
+                                    </section>
+                                    {{template "pagination" .}}
+
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {{template "footer" .}}
+        </div>
+    </div>
+    <!--   Core JS Files   -->
+    <script src="/assets/js/jquery-1.10.2.js" type="text/javascript"></script>
+    <script src="/assets/js/bootstrap.min.js" type="text/javascript"></script>
+    <!-- Paper Dashboard Core javascript and methods for Demo purpose -->
+    <script src="/assets/js/goodman.js"></script>
+</body>

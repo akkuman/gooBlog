@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    {{template "header" .}}
+</head>
+<body>
+    <div class="wrapper">
+        {{template "sidebar" .}}
+        <div class="main-panel">
+            {{template "nav" .}}
+             <div class="content bg-white">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-8 col-md-offset-2">
+                            <div class="post-area">
+                                <div class="card card-user">
+                                    <div class="image">
+                                        <img src="/assets/img/demo.jpeg">
+                                    </div>
+                                    <div class="content">
+                                        <div class="author">
+                                            <img class="avatar border-white" src="/assets/img/avatar.png" alt="John Doe">
+                                            <h2 class="title">关于我</h2>
+                                            <br>
+                                            <h4 class="title">
+                                                {{.author}}
+                                                <br>
+                                                <a href="{{.linkGithub}}"><small>@{{.author}}</small></a>
+                                            </h4>
+                                        </div>
+                                        <div class="description text-center">
+                                            {{range $i, $v := .aboutSlice}}
+                                                <p>{{$v}}<br></p>
+                                            {{end}}
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <div class="text-center">
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <h5>{{.blogsNum}}<br><small>Blogs</small></h5>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <h5>{{.tagsNum}}<br><small>Tages</small></h5>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <h5>{{.categoriesNum}}<br><small>Categories</small></h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+             </div>
+        </div>
+    </div>
+</body>
+</html>

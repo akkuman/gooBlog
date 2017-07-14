@@ -1,0 +1,12 @@
+{
+	"author":"Akkuman",
+	"sitename": "Akkuman的博客",
+	"quote": ["心有猛虎","细嗅蔷薇"],
+	"about": ["行走在网络上的小透明","喜欢Python和Golang","热爱瞎折腾"],
+	"ListenAndServe": "0.0.0.0:4000",
+	"auth": {"username": "admin", "password": "admin"},
+	"theme": "default",
+	"social": {"Github":"akkuman", "Twitter":"OneCodeCat"},
+	"copyright":"2016-2017",
+	"page_offset":"5"
+}

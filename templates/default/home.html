@@ -1,0 +1,82 @@
+{{$theAuthor := .author}}
+<!doctype html>
+<html lang="en">
+
+<head>
+    {{template "header" .}}
+</head>
+
+<body>
+    <div class="wrapper">
+        {{template "sidebar" .}}
+        <div class="main-panel">
+            {{template "nav" .}}
+            <div class="content bg-white">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-8 col-md-offset-2">
+                            <div class="post-area">
+                            {{range .articles}}
+                                <div class="blog-post">
+                                    <div>
+                                        <h1 class="large-title blog-post__heading u-mt-0">
+                                            <a href="{{.Url}}">
+                                                {{.Title}}
+                                            </a>
+                                        </h1>
+                                        <span class="hs_cos_wrapper hs_cos_wrapper_widget hs_cos_wrapper_type_custom_widget" style="" data-hs-cos-general-type="widget" data-hs-cos-type="custom_widget">
+                                            <div class="blog-post__metadata">
+                                            <img src="/assets/img/avatar.png" class="blog-post__metadata__author-img">
+                                            <div>
+                                                {{$theAuthor}}
+                                                <div class="blog-post__metadata__post-info">
+                                                <div class="blog-post__metadata__read-time">
+                                                    {{.CreatedAt | printf "%.10s"}} | {{.ReadTime}} min read
+                                                </div>
+                                                <div class="blog-post__metadata__topics">
+
+                                                    <a href="#" class="blog-post__metadata__topic">
+                                                    <!--Javascript-->
+                                                    </a>
+
+                                                    <a href="#" class="blog-post__metadata__topic">
+                                                    <!--Web-->
+                                                    </a>
+
+                                                </div>
+                                                </div>
+                                            </div>
+                                            </div>
+                                            </span>
+
+                                    </div>
+                                    <div class="blog-post__content">
+                                        <p>
+                                            {{.Summary}}
+                                        </p>
+                                    </div>
+
+                                    
+                                    <div class="text-center">
+                                        <a href="{{.Url}}">
+                                            <button class="btn btn-rect">Read More <i class="ti-arrow-right"></i></button>
+                                        </a>
+                                    </div>
+
+                                </div>
+                                {{end}}
+                            {{template "pagination" .}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {{template "footer" .}}
+        </div>
+    </div>
+    <!--   Core JS Files   -->
+    <script src="/assets/js/jquery-1.10.2.js" type="text/javascript"></script>
+    <script src="/assets/js/bootstrap.min.js" type="text/javascript"></script>
+    <!-- Paper Dashboard Core javascript and methods for Demo purpose -->
+    <script src="/assets/js/goodman.js"></script>
+</body>

@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+	{{template "header" .}}
+	<style type="text/css">
+		body {
+			margin-left: auto;
+			margin-right: auto;
+			margin-TOP: 100px;
+			width: 20em;
+		}
+	</style>
+	<script src="https://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
+	<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+	{{if .showError}}
+		<div class="alert alert-warning" style="background-color:#CFCFCF;border-radius: 20px;">
+			<a href="#" class="close" data-dismiss="alert">
+				&times;
+			</a>
+			<strong>提示！</strong>账号或密码错误。
+		</div>
+	{{end}}
+	<form method="POST" action="/login">
+		<!--下面是用户名输入框-->
+		<div class="input-group">
+			<span class="input-group-addon" style="border:1px solid #66615b;border-radius: 20px;">@</span>
+			<input name="username" type="text" class="form-control" placeholder="用户名" style="border:1px solid #66615b;border-radius: 20px;">
+		</div>
+		<br>
+		<!--下面是密码输入框-->
+		<div class="input-group">
+			<span class="input-group-addon" style="border:1px solid #66615b;border-radius: 20px;">@</span>
+			<input name="password" type="text" class="form-control" placeholder="密码" style="border:1px solid #66615b;border-radius: 20px;">
+		</div>
+		<br>
+		<!--下面是登陆按钮,包括颜色控制-->
+		<button type="submit" style="width:280px;" class="btn btn-default">登 录</button>
+	</form>
+
+</body>

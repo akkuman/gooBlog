@@ -1,0 +1,113 @@
+{{$theAuthor := .author}}
+<!doctype html>
+<html lang="en">
+
+<head>
+    {{template "header" .}}
+    <link href="/assets/css/highlight.css" rel="stylesheet" />
+</head>
+
+<body>
+    <div class="wrapper">
+        {{template "sidebar" .}}
+        <div class="main-panel">
+            {{template "nav" .}}
+            <div class="content bg-white">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-8 col-md-offset-2">
+                            <div class="post-area">
+                                {{with .article}}
+                                <div class="blog-post">
+                                    <div>
+                                        <h1 class="large-title blog-post__heading u-mt-0">
+                                            <a href="#">
+                                            {{.Title}}
+                                        </a>
+                                        </h1>
+                                        <span class="hs_cos_wrapper hs_cos_wrapper_widget hs_cos_wrapper_type_custom_widget" style="" data-hs-cos-general-type="widget"
+                                            data-hs-cos-type="custom_widget"><div class="blog-post__metadata">
+                                          <img src="/assets/img/avatar.png" class="blog-post__metadata__author-img">
+                                          <div>
+                                            {{$theAuthor}}
+                                            <div class="blog-post__metadata__post-info">
+                                              <div class="blog-post__metadata__read-time">
+                                                 {{.CreatedAt | printf "%.10s"}} | {{.ReadTime}} min read
+                                              </div>
+                                              <!--
+                                              <div class="blog-post__metadata__topics">
+
+                                                <a href="#" class="blog-post__metadata__topic">
+                                                  Javascript
+                                                </a>
+
+                                                <a href="#" class="blog-post__metadata__topic">
+                                                  Web
+                                                </a>
+
+                                              </div>
+                                              -->
+                                            </div>
+                                          </div>
+                                        </div>
+                                        </span>
+                                        <!--
+                                        <div class="blog-post__resource">
+                                            <a href="#">
+                                                <div class="blog-post__image-container" style="background-image: url(assets/img/demo.jpeg)">
+                                                    <div class="blog-post__image-overlay">
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </div>
+                                        -->
+                                    </div>
+                                    <div class="blog-post__content">
+                                        <span class="hs_cos_wrapper hs_cos_wrapper_meta_field hs_cos_wrapper_type_rich_text" style="" data-hs-cos-general-type="meta_field"
+                                            data-hs-cos-type="rich_text">
+                                            {{.Content | RawHTML}}
+                                        </span>
+                                    </div>
+
+                                </div>
+                                {{end}}
+
+                                <div class="blog-pagination">
+                                    <div>
+                                        <a class="btn btn-default btn-green {{if not .hasPrevArticle}}disabled{{end}} blog-pagination__btn blog-pagination__btn--prev" rel="prev" href="{{.prevArticle.Url}}">
+                                            <span class="blog-pagination__btn-label">P r e v</span>
+                                            <i class="fa fa-chevron-left"></i>
+                                        </a>
+                                    </div>
+                                    <div>
+                                        <a class="btn btn-default btn-green {{if not .hasNextArticle}}disabled{{end}} blog-pagination__btn blog-pagination__btn--next" rel="next" href="{{.nextArticle.Url}}">
+                                            <span class="blog-pagination__btn-label">N e x t</span>
+                                            <i class="fa fa-chevron-right"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {{template "footer" .}}
+        </div>
+    </div>
+    <!--   Core JS Files   -->
+    <script src="/assets/js/jquery-1.10.2.js" type="text/javascript"></script>
+    <script src="/assets/js/bootstrap.min.js" type="text/javascript"></script>
+
+    <!--   Highlight   -->
+    <script src="/assets/js/highlight.js" type="text/javascript"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <script type="text/javascript"> 
+        var setupContents = function () { $(".blog-post__content img").each(function() { $(this).attr('data-action', 'zoom'); }); }; setupContents(); 
+    </script>
+    <!-- Goodman javascript-->
+    <script src="/assets/js/goodman.js" type="text/javascript"></script>
+</body>
+
+</html>

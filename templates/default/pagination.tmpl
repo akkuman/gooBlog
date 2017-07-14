@@ -1,0 +1,16 @@
+{{define "pagination"}}
+                            <div class="blog-pagination">
+                                <div>
+                                    <a class="btn btn-success btn-green {{if not .hasNewerArticles}}disabled{{end}} blog-pagination__btn blog-pagination__btn--prev" rel="new" href="{{.newerArticlesLink}}">
+                                        <i class="ti-arrow-left"></i>
+                                        <span class="blog-pagination__btn-label">Newer</span>
+                                    </a>
+                                </div>
+                                <div>
+                                    <a class="btn btn-success btn-green {{if not .hasOlderArticles}}disabled{{end}} blog-pagination__btn blog-pagination__btn--next" rel="old" href="{{.olderArticlesLink}}">
+                                        <i class="ti-arrow-right"></i>                                        
+                                        <span class="blog-pagination__btn-label">Older</span>
+                                    </a>
+                                </div>
+                            </div>
+{{end}}
