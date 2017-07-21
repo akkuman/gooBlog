@@ -14,21 +14,23 @@ type Article struct {
 	Summary    string `gorm:"size:1<<16-1"`
 	Keywords   string
 	Url        string
-	Tags       []Tag
-	Category   Category
+	Tags       []Tag    `gorm:"ForeignKey:ArticleID"`
+	Category   Category `gorm:"ForeignKey:ArticleID"`
 	ReadTime   int
 	ViewNum    int
 	CommentNum int
 }
 
 type Tag struct {
-	ID   uint
-	Name string `gorm:"index"`
+	ID        uint
+	ArticleID uint
+	Name      string
 }
 
 type Category struct {
-	ID   uint
-	Name string `gorm:"index"`
+	ID        uint
+	ArticleID uint
+	Name      string
 }
 
 // 创建并初始化数据库
@@ -96,6 +98,8 @@ func GetArticle(id uint) Article {
 	var article Article
 	db.First(&article, id)
 	db.Model(&article).Update("ViewNum", article.ViewNum+1)
+	article.Tags = GetTags(id)
+	article.Category = GetCategory(id)[0]
 	return article
 }
 
@@ -138,7 +142,7 @@ func GetPrevArticle(id uint) Article {
 	defer db.Close()
 
 	var articles []Article
-	db.Where(fmt.Sprintf("id < %d", id)).Order("id desc").Limit(1).Find(&articles)
+	db.Where("id < ?", id).Order("id desc").Limit(1).Find(&articles)
 	if len(articles) != 0 {
 		return articles[0]
 	}
@@ -154,7 +158,7 @@ func GetNextArticle(id uint) Article {
 	defer db.Close()
 
 	var articles []Article
-	db.Where(fmt.Sprintf("id > %d", id)).Limit(1).Find(&articles)
+	db.Where("id > ?", id).Limit(1).Find(&articles)
 	if len(articles) != 0 {
 		return articles[0]
 	}
@@ -173,8 +177,8 @@ func AddCategory(cate Category) uint {
 	return cate.ID
 }
 
-// 取得所有分类的数据列表
-func GetAllCategory() []Category {
+// 取得指定ArticleID分类的数据列表,参数为0取出所有
+func GetCategory(articleID uint) []Category {
 	db, err := gorm.Open("sqlite3", "db.db")
 	if err != nil {
 		panic("连接数据库失败")
@@ -182,7 +186,7 @@ func GetAllCategory() []Category {
 	defer db.Close()
 
 	var categories []Category
-	db.Find(&categories)
+	db.Where("article_id = ?", articleID).Find(&categories)
 	return categories
 }
 
@@ -198,8 +202,8 @@ func AddTag(tag Tag) uint {
 	return tag.ID
 }
 
-// 取得所有标签的数据列表
-func GetAllTag() []Tag {
+// 取得指定ArticleID标签的数据列表,参数为0取出所有
+func GetTags(articleID uint) []Tag {
 	db, err := gorm.Open("sqlite3", "db.db")
 	if err != nil {
 		panic("连接数据库失败")
@@ -207,6 +211,6 @@ func GetAllTag() []Tag {
 	defer db.Close()
 
 	var tags []Tag
-	db.Find(&tags)
+	db.Where("article_id = ?", articleID).Find(&tags)
 	return tags
 }

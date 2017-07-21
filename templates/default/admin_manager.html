@@ -53,6 +53,24 @@
                     <hr>
                     <h3 style="text-align:center;">文章管理</h3>
                     <hr>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                            <th>Title</th>
+                            <th>Edit</th>
+                            <th>Delete</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{range .articles}}
+                            <tr>
+                            <td>{{.Title}}</td>
+                            <td><a href="/article/{{.ID}}/edit">编辑</a></td>
+                            <td><a href="/article/{{.ID}}/del">删除</a></td>
+                            </tr>
+                            {{end}}
+                        </tbody>
+                    </table>
                 </div>
             </div>
             {{template "footer" .}}

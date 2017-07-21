@@ -34,19 +34,13 @@
                                               <div class="blog-post__metadata__read-time">
                                                  {{.CreatedAt | printf "%.10s"}} | {{.ReadTime}} min read
                                               </div>
-                                              <!--
                                               <div class="blog-post__metadata__topics">
-
+                                                {{range .Tags}}
                                                 <a href="#" class="blog-post__metadata__topic">
-                                                  Javascript
+                                                  {{.Name}}
                                                 </a>
-
-                                                <a href="#" class="blog-post__metadata__topic">
-                                                  Web
-                                                </a>
-
+                                                {{end}}
                                               </div>
-                                              -->
                                             </div>
                                           </div>
                                         </div>

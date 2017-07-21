@@ -35,7 +35,9 @@ func main() {
 	m.Get("/admin/manager", BasicRenderData, ManagerPage)
 	m.Post("/admin/category/add", BasicRenderData, PostAddCategory)
 	m.Post("/admin/tag/add", BasicRenderData, PostAddTag)
-	m.Get("/article/:id([0-9]+)", BasicRenderData, ArticlePage)
+	m.Get("/article/:id(^[1-9]\\d*$)", BasicRenderData, ArticlePage)
+	m.Combo("/article/:id(^[1-9]\\d*$)/edit").Get(BasicRenderData, EditArticle).Post(BasicRenderData, PostEditArticle)
+	m.Get("/article/:id(^[1-9]\\d*$)/del", BasicRenderData, DelArticle)
 
 	m.NotFound(BasicRenderData, NotFoundPage)
 

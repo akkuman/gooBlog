@@ -1,6 +1,8 @@
 package controllers
 
 import (
+	"time"
+
 	"github.com/akkuman/gooBlog/models"
 
 	"gopkg.in/macaron.v1"
@@ -33,8 +35,8 @@ func AdminPage(ctx *macaron.Context) {
 	if checkLoginStatus(ctx) {
 		ctx.Data["pageTitle"] = "后台管理-" + sitename
 		ctx.Data["isAdd"] = true
-		ctx.Data["categories"] = models.GetAllCategory()
-		ctx.Data["tags"] = models.GetAllTag()
+		ctx.Data["categories"] = models.GetCategory(uint(0))
+		ctx.Data["tags"] = models.GetTags(uint(0))
 		ctx.HTML(200, "admin_article")
 	} else {
 		ctx.Redirect("/login", 302)
@@ -46,8 +48,8 @@ func PostAddArticle(ctx *macaron.Context) {
 	if checkLoginStatus(ctx) {
 		ctx.Data["pageTitle"] = "后台管理-" + sitename
 		ctx.Data["isAdd"] = true
-		ctx.Data["categories"] = models.GetAllCategory()
-		ctx.Data["tags"] = models.GetAllTag()
+		ctx.Data["categories"] = models.GetCategory(uint(0))
+		ctx.Data["tags"] = models.GetTags(uint(0))
 		articleTitle := ctx.Query("articleTitle")
 		articleSummary := ctx.Query("articleSummary")
 		articleContent := ctx.Query("articleContent")
@@ -90,6 +92,7 @@ func checkLoginStatus(ctx *macaron.Context) bool {
 func ManagerPage(ctx *macaron.Context) {
 	ctx.Data["pageTitle"] = "后台管理-" + sitename
 	ctx.Data["isManager"] = true
+	ctx.Data["articles"] = models.ListArticle(-1, -1)
 
 	ctx.HTML(200, "admin_manager")
 }
@@ -127,6 +130,47 @@ func PostAddTag(ctx *macaron.Context) {
 			_ = models.AddTag(tag)
 		}
 		ctx.HTML(200, "admin_manager")
+	} else {
+		ctx.Redirect("/login", 302)
+	}
+}
+
+// 文章修改页面
+func EditArticle(ctx *macaron.Context) {
+	if checkLoginStatus(ctx) {
+		ctx.Data["pageTitle"] = "编辑文章-" + sitename
+		ctx.Data["isAdd"] = true
+		id := ctx.ParamsInt("id")
+		article := models.GetArticle(uint(id))
+		ctx.Data["article"] = article
+		ctx.HTML(200, "edit_article")
+	} else {
+		ctx.Redirect("/login", 302)
+	}
+}
+
+// POST修改文章
+func PostEditArticle(ctx *macaron.Context) {
+	if checkLoginStatus(ctx) {
+		var article models.Article
+		article.CreatedAt, _ = time.Parse("2006-01-02 15:04:05", ctx.Query("articleCreatedAt"))
+		article.Title = ctx.Query("articleTitle")
+		article.Summary = ctx.Query("articleSummary")
+		article.Content = ctx.Query("articleContent")
+		if article.Title != "" {
+			models.UpdateArticle(article)
+		}
+		ctx.Redirect("/admin/manager", 302)
+	} else {
+		ctx.Redirect("/login", 302)
+	}
+}
+
+func DelArticle(ctx *macaron.Context) {
+	if checkLoginStatus(ctx) {
+		id := ctx.ParamsInt("id")
+		models.DelArticle(uint(id))
+		ctx.Redirect("/admin/manager", 302)
 	} else {
 		ctx.Redirect("/login", 302)
 	}
